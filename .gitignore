@@ -1,0 +1,11 @@
+**/.venv
+**/.env
+**/.idea
+**/*.pyc
+**/__pycache__
+**/*.gguf
+**/postgres-data
+
+*.parquet
+synthetic/
+qdrant/

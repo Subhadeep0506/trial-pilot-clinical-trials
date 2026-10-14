@@ -1,0 +1,43 @@
+[project]
+name = "clinical-trials-backend"
+version = "0.1.0"
+requires-python = ">=3.13"
+description = "Backend for clinical trials management system"
+dependencies = [
+    "anthropic>=0.120.2",
+    "deepagents",
+    "fastapi>=0.141.1",
+    "langchain>=1.3.14",
+    "langchain-classic>=1.0.8",
+    "langchain-community>=0.4.2",
+    "langchain-openai>=1.7.1",
+    "langchain-qdrant>=1.1.0",
+    "langgraph>=1.2.10",
+    "laya[onnx]>=0.3.28",
+    "llama-cpp-python>=0.3.34",
+    "psycopg2-binary>=2.9.12",
+    "pyarrow>=25.0.0",
+    "pydantic>=2.13.4",
+    "python-dotenv>=1.2.2",
+    "qdrant-client>=1.19.0",
+    "requests>=2.34.2",
+    "tqdm>=4.70.0",
+    "uvicorn>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.3.0",
+    "pip-system-certs>=5.3",
+]
+
+[[tool.uv.index]]
+name = "llama-cpp-python"
+url = "https://abetlen.github.io/llama-cpp-python/whl/cpu"
+# Only consulted for packages pinned to it in [tool.uv.sources]; without this uv
+# searches it for every dependency, which both slows resolution and fails behind
+# the corporate TLS proxy.
+explicit = true
+
+[tool.uv.sources]
+llama-cpp-python = { index = "llama-cpp-python" }

@@ -1,0 +1,342 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.6 Chrome/140.0.7339.249 Electron/38.8.0 Safari/537.36" version="29.3.6">
+  <diagram name="Page-1" id="UFVh2j-sI_5pX8hj9r5J">
+    <mxGraphModel dx="2782" dy="978" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1450" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="vzyw6x3U6I1BF35zaITR-4" edge="1" parent="1" source="Y4m1K4SaenJKtPNg5y8E-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-44">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="529.0000000000005" y="551" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y4m1K4SaenJKtPNg5y8E-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;arcSize=50;" value="Patient Details/ Prompt/FHIR Bundle" vertex="1">
+          <mxGeometry height="63" width="214" x="422" y="373" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-13" edge="1" parent="1" source="vzyw6x3U6I1BF35zaITR-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="vzyw6x3U6I1BF35zaITR-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Parsed Patient Details&lt;div&gt;(Structured Output)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="142" x="458" y="679" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-5" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="vzyw6x3U6I1BF35zaITR-1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="528.9999999999995" y="629" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-21" edge="1" parent="1" source="vzyw6x3U6I1BF35zaITR-6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;curved=0;" target="vzyw6x3U6I1BF35zaITR-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-6" parent="1" style="sketch=0;outlineConnect=0;fontColor=#FFFFFF;gradientColor=none;fillColor=#FFB366;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.sagemaker_model;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="LLM" vertex="1">
+          <mxGeometry height="78" width="78" x="663" y="803" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-25" edge="1" parent="1" source="vzyw6x3U6I1BF35zaITR-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="vzyw6x3U6I1BF35zaITR-24" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Complete Patient Details&lt;div&gt;(Structured Output)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="142" x="458" y="980" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-14" edge="1" parent="1" source="vzyw6x3U6I1BF35zaITR-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="vzyw6x3U6I1BF35zaITR-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-17" connectable="0" parent="vzyw6x3U6I1BF35zaITR-14" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="NO" vertex="1">
+          <mxGeometry relative="1" x="-0.4222" y="1" as="geometry">
+            <mxPoint x="-2" y="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-15" edge="1" parent="1" source="vzyw6x3U6I1BF35zaITR-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="vzyw6x3U6I1BF35zaITR-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-16" connectable="0" parent="vzyw6x3U6I1BF35zaITR-15" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="YES" vertex="1">
+          <mxGeometry relative="1" x="-0.0995" y="-1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-12" parent="1" style="rhombus;whiteSpace=wrap;html=1;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;strokeColor=#66B2FF;" value="HAS GAPS or&amp;nbsp;&lt;div&gt;IS LOW CONFIDENCE&lt;/div&gt;" vertex="1">
+          <mxGeometry height="116" width="117" x="470.5" y="784" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-23" edge="1" parent="1" source="vzyw6x3U6I1BF35zaITR-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="vzyw6x3U6I1BF35zaITR-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-19" parent="1" style="sketch=0;outlineConnect=0;fontColor=#FFFFFF;gradientColor=none;fillColor=#6666FF;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.sagemaker_model;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Decision Model" vertex="1">
+          <mxGeometry height="78" width="78" x="663" y="976" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-22" edge="1" parent="1" source="vzyw6x3U6I1BF35zaITR-20" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;curved=0;" target="vzyw6x3U6I1BF35zaITR-19">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="801" y="1015" />
+            </Array>
+            <mxPoint x="800.5555555555554" y="945.0000000000002" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-20" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="User Feedback" vertex="1">
+          <mxGeometry height="63" width="77" x="762" y="904" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-27" edge="1" parent="1" source="vzyw6x3U6I1BF35zaITR-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="vzyw6x3U6I1BF35zaITR-26" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-29" edge="1" parent="1" source="vzyw6x3U6I1BF35zaITR-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="vzyw6x3U6I1BF35zaITR-28" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-24" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Fetching and Ranking Trials based on Criterias" vertex="1">
+          <mxGeometry height="70" width="142" x="457" y="1230" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-35" edge="1" parent="1" source="vzyw6x3U6I1BF35zaITR-26" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;curved=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="vzyw6x3U6I1BF35zaITR-34">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="839" y="1374" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-37" connectable="0" parent="vzyw6x3U6I1BF35zaITR-35" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="GAP FILLER QnA" vertex="1">
+          <mxGeometry relative="1" x="-0.1887" y="1" as="geometry">
+            <mxPoint x="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-40" edge="1" parent="1" source="vzyw6x3U6I1BF35zaITR-26" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;curved=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="vzyw6x3U6I1BF35zaITR-39" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-51" edge="1" parent="1" source="vzyw6x3U6I1BF35zaITR-26" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;curved=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-50">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-26" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=7;strokeColor=#FF6666;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=top;" value="Filtering and Shortlisting Loop&lt;div&gt;Paired with HITL&lt;/div&gt;" vertex="1">
+          <mxGeometry height="228" width="322" x="367" y="1341" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-41" edge="1" parent="1" source="vzyw6x3U6I1BF35zaITR-28" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;curved=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-50">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="916" y="1265" />
+              <mxPoint x="916" y="1687" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-42" connectable="0" parent="vzyw6x3U6I1BF35zaITR-41" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="LLM Reviews Flagged Trials" vertex="1">
+          <mxGeometry relative="1" x="0.0142" y="-2" as="geometry">
+            <mxPoint y="81" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-28" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Trials Flagged for Review&lt;div&gt;(Overflow Eligibility/Criteria)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="142" x="715" y="1230" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-30" parent="1" style="sketch=0;outlineConnect=0;fontColor=#FFFFFF;gradientColor=none;fillColor=#FFB366;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.sagemaker_model;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="LLM" vertex="1">
+          <mxGeometry height="78" width="78" x="391.5" y="1372" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-31" parent="1" style="sketch=0;outlineConnect=0;fontColor=#FFFFFF;gradientColor=none;fillColor=#6666FF;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.sagemaker_model;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Decision Model" vertex="1">
+          <mxGeometry height="78" width="78" x="586.5" y="1369" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-33" parent="1" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/general/Code.svg;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Predicates" vertex="1">
+          <mxGeometry height="52" width="64" x="496" y="1474" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-36" edge="1" parent="1" source="vzyw6x3U6I1BF35zaITR-34" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;curved=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="vzyw6x3U6I1BF35zaITR-26">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="839" y="1535" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-34" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="User Feedback" vertex="1">
+          <mxGeometry height="63" width="77" x="800" y="1424" as="geometry" />
+        </mxCell>
+        <mxCell id="vzyw6x3U6I1BF35zaITR-39" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;strokeColor=#FF6666;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Shortlisted Trials for the Patient for Review" vertex="1">
+          <mxGeometry height="76" width="174" x="343.5" y="1649" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-1" parent="1" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Verification cascade - 6.6" vertex="1">
+          <mxGeometry height="531" width="330" x="-844" y="3738" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-2" parent="iVacEnln6Wj3RIXiUiuN-1" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="1 - Predicates in Python&#xa;age, sex, lab thresholds, date windows" vertex="1">
+          <mxGeometry height="102" width="260" x="43" y="46" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-3" parent="iVacEnln6Wj3RIXiUiuN-1" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="2 - Decision model&#xa;routing plus bounded yes/no" vertex="1">
+          <mxGeometry height="102" width="260" x="43" y="223" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-4" parent="iVacEnln6Wj3RIXiUiuN-1" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="3 - LLM entailment&#xa;only criteria needing judgement" vertex="1">
+          <mxGeometry height="102" width="260" x="43" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-5" edge="1" parent="iVacEnln6Wj3RIXiUiuN-1" source="iVacEnln6Wj3RIXiUiuN-2" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-3" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-6" edge="1" parent="iVacEnln6Wj3RIXiUiuN-1" source="iVacEnln6Wj3RIXiUiuN-3" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-4" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-7" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Optional questioning - 6.2" vertex="1">
+          <mxGeometry height="384" width="330" x="-747" y="2552" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-8" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Intake parsing - 6.1" vertex="1">
+          <mxGeometry height="376" width="308" x="-833" y="1574" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-9" parent="1" style="rounded=1;whiteSpace=wrap;arcSize=50;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Patient details: narrative, FHIR bundle, or sample" vertex="1">
+          <mxGeometry height="63" width="231" x="-794" y="1461" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-10" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Decision model&#xa;bounded fields only:&#xa;sex, age band, smoking,&#xa;pregnancy status, ECOG,&#xa;prior lines" vertex="1">
+          <mxGeometry height="150" width="238" x="-798" y="1599" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-11" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="LLM&#xa;open-ended remainder:&#xa;medications, conditions,&#xa;labs, biomarkers, dates" vertex="1">
+          <mxGeometry height="126" width="237" x="-797" y="1799" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-12" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Parsed patient profile&#xa;source span per fact&#xa;confidence per bounded field" vertex="1">
+          <mxGeometry height="126" width="260" x="-809" y="2000" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-13" parent="1" style="rhombus;strokeWidth=2;whiteSpace=wrap;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Low confidence or&#xa;missing protocol-critical fact?" vertex="1">
+          <mxGeometry height="302" width="302" x="-830" y="2176" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-14" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="LLM drafts bounded questions" vertex="1">
+          <mxGeometry height="78" width="260" x="-712" y="2577" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-15" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Clinician answers" vertex="1">
+          <mxGeometry height="54" width="184" x="-674" y="2705" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-16" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Decision model re-answers&#xa;with the new facts in context" vertex="1">
+          <mxGeometry height="102" width="260" x="-712" y="2809" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-17" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Complete patient profile" vertex="1">
+          <mxGeometry height="54" width="238" x="-798" y="2986" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-18" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Confirm profile - 6.3&#xa;&lt;b&gt;always shown&lt;/b&gt;&#xa;clinician reviews and edits" vertex="1">
+          <mxGeometry height="102" width="250" x="-804" y="3090" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-19" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Retrieve 100-120 candidates - 6.4&#xa;hybrid dense plus sparse, over the profile&#xa;dense-cosine floor&#xa;hard filters: status, phase, intervention, geo" vertex="1">
+          <mxGeometry height="198" width="260" x="-809" y="3242" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-20" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Parse and route criteria - 6.5&#xa;eligibility text to structured criteria&#xa;cached per nct_id&#xa;overflow past the cap marked unverifiable" vertex="1">
+          <mxGeometry height="198" width="260" x="-809" y="3490" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-21" parent="1" style="rhombus;strokeWidth=2;whiteSpace=wrap;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Unknown criteria&#xa;in the top N trials?" vertex="1">
+          <mxGeometry height="211" width="211" x="-650" y="4319" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-22" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Clinician answers&#xa;max 3 rounds, then unverifiable" vertex="1">
+          <mxGeometry height="102" width="260" x="-964" y="4628" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-23" parent="1" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Compute verdict, cost, tier, rank - 6.7&#xa;&lt;b&gt;all by rule, reproducible&lt;/b&gt;&#xa;LLM writes only the explanation prose" vertex="1">
+          <mxGeometry height="150" width="260" x="-654" y="4604" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-24" parent="1" style="rounded=1;whiteSpace=wrap;arcSize=50;strokeWidth=2;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Shortlisted trials, streamed as each is verified" vertex="1">
+          <mxGeometry height="87" width="237" x="-642" y="4804" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-25" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-9" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-10" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-26" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-10" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-11" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-27" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-11" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-12" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-28" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-12" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-13" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-29" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-13" style="curved=1;startArrow=none;endArrow=block;exitX=0.76;exitY=1;entryX=0.5;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-14" value="yes">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-582" y="2515" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-30" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-14" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-15" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-31" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-15" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-16" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-32" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-16" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.71;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-17" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-582" y="2961" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-33" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-13" style="curved=1;startArrow=none;endArrow=block;exitX=0.24;exitY=1;entryX=0.29;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-17" value="no">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-776" y="2515" />
+              <mxPoint x="-776" y="2961" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-34" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-17" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-18" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-35" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-18" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-19" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-36" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-19" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-20" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-37" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-21" style="curved=1;startArrow=none;endArrow=block;exitX=0;exitY=0.96;entryX=0.74;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-22" value="yes">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-699" y="4567" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-38" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-21" style="curved=1;startArrow=none;endArrow=block;exitX=0.57;exitY=1;entryX=0.5;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-23" value="no">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-524" y="4567" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-39" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-23" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-24" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-40" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-20" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-1" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-41" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-1" style="curved=1;startArrow=none;endArrow=block;exitX=0.87;exitY=1;entryX=0.5;entryY=0;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-21" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-544" y="4294" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-42" edge="1" parent="1" source="iVacEnln6Wj3RIXiUiuN-22" style="curved=1;startArrow=none;endArrow=block;exitX=0.47;exitY=0;entryX=0.03;entryY=1;rounded=0;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" target="iVacEnln6Wj3RIXiUiuN-1" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-850" y="4567" />
+              <mxPoint x="-850" y="4294" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-44" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="" vertex="1">
+          <mxGeometry height="141" width="300" x="379" y="476" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-43" parent="1" style="sketch=0;outlineConnect=0;fontColor=#FFFFFF;gradientColor=none;fillColor=#6666FF;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.sagemaker_model;labelPosition=center;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="Decision Model&lt;div&gt;for bounded fields&lt;/div&gt;" vertex="1">
+          <mxGeometry height="78" width="78" x="396" y="487" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-45" parent="1" style="sketch=0;outlineConnect=0;fontColor=#FFFFFF;gradientColor=none;fillColor=#FFB366;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.sagemaker_model;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="LLM for open-ended" vertex="1">
+          <mxGeometry height="78" width="78" x="582" y="487" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-47" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="User/Clinician Confirms/Edits Patient details" vertex="1">
+          <mxGeometry height="70" width="142" x="457" y="1118" as="geometry" />
+        </mxCell>
+        <mxCell id="iVacEnln6Wj3RIXiUiuN-50" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;strokeColor=#FF6666;fontFamily=Funnel Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFunnel%2BSans;" value="LLM Provides Explanations and Unmet reasoning" vertex="1">
+          <mxGeometry height="76" width="174" x="541" y="1649" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

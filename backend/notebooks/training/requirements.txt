@@ -1,0 +1,24 @@
+# Dependencies for the Laya fine-tune and ONNX export, sized for a Colab/Kaggle GPU runtime.
+#
+# torch is DELIBERATELY not listed. Colab and Kaggle ship a CUDA build already, and
+# naming torch here risks pip resolving it to a CPU wheel -- which is exactly the
+# situation on the TrialMatch dev box (torch 2.14.1+cpu) that this whole script
+# exists to escape. Check it with: python -c "import torch; print(torch.cuda.is_available())"
+
+laya[onnx]>=0.4.6
+
+# transformers 5.x, not 4.x. The checkpoint's encoder/config.json declares
+# transformers_version 5.0.0 and carries `layer_types` and the nested `rope_parameters`
+# block. laya has a 4.x compatibility shim (common._apply_rope_config) that maps RoPE
+# thetas onto the attributes 4.x reads, but pinning 5.x avoids relying on it -- a
+# silently wrong RoPE base would degrade the encoder without any error.
+transformers>=5.0
+
+safetensors>=0.8
+huggingface_hub>=0.30
+
+# Export and verification. onnxruntime is CPU-only here on purpose: the export check
+# compares against torch on CPU, and inference in this project runs on CPU anyway.
+onnx>=1.17
+onnxruntime>=1.20
+numpy
