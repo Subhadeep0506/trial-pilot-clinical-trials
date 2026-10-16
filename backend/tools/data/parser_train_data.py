@@ -15,6 +15,7 @@ import json
 import logging
 import os
 import random
+import re
 import sys
 import threading
 import time
@@ -49,10 +50,16 @@ logger = logging.getLogger("parser_train_data")
 #                     choice -> the option key, as a string
 #                     noul   -> a JSON boolean
 #                     score  -> the ZERO-BASED level index, not the level's label.
-#                               Fractional values interpolate across adjacent levels,
-#                               which is how "two or three prior lines" is expressed.
+#                               Fractional values interpolate across adjacent levels.
+#                               Do NOT use them for a hedged fact: laya grades with
+#                               argmax(target), and `n - 0.5` is an exact tie that
+#                               numpy breaks downward, so the item can never be won.
+#                               A hedge belongs in `gold` (see _score_spread).
 #                     gold   -> {"probabilities": {...}} keyed by option label, by
-#                               "false"/"true" for noul, or by level index for score.
+#                               "false"/"true" for noul, or -- for score -- by the
+#                               level INDEX as a string ("4", never "4+"). Keys that
+#                               match no option are dropped and the rest renormalised,
+#                               silently, so a typo here costs mass rather than raising.
 #
 # Getting a literal wrong does not raise: train.py counts the item under
 # `invalid_target` and silently drops it. The `laya-train --dry-run` verification step
@@ -265,6 +272,7 @@ NON_ONCOLOGY_CASES = [
     ),
 ]
 
+
 OFF_TOPIC_PROMPTS = [
     "what's the weather in Boston tomorrow?",
     "can you explain how clinical trial phases work?",
@@ -278,13 +286,76 @@ OFF_TOPIC_PROMPTS = [
     "find me a cardiologist near Chicago",
     "thanks, that was helpful!",
     "summarise the latest guidelines on breast cancer screening",
+    "how does this matching service actually work?",
+    "how long does it usually take to hear back after sending in details?",
+    "do I need a referral from a doctor before using this?",
+    "can this service be used from outside the US?",
+    "is there a phone number I can call instead of typing all this out?",
+    "do you work with particular hospitals, or all of them?",
+    "what happens to an enquiry after it's submitted?",
+    "can I speak to a real person rather than an automated system?",
+    "do you cover conditions other than cancer?",
+    "what are your opening hours?",
+    "is there an app, or is it only the website?",
+    "what does 'double-blind' mean on a trial listing?",
+    "what's the difference between a phase 2 and a phase 3 study?",
+    "what does 'placebo-controlled' mean -- would someone get no treatment at all?",
+    "what is a washout period?",
+    "what does 'open-label extension' mean?",
+    "what do they mean by 'inclusion criteria'?",
+    "what is informed consent, and when do you sign it?",
+    "on a listing, what's the difference between 'recruiting' and 'active, not recruiting'?",
+    "what's a control arm?",
+    "what does 'standard of care' mean in a trial description?",
+    "who sits on an ethics committee and what do they decide?",
+    "do clinical trials cost money to take part in?",
+    "is travel to a trial site usually reimbursed?",
+    "does insurance normally cover scans done as part of a study?",
+    "can someone withdraw from a trial once it has started?",
+    "how often do trial visits usually happen?",
+    "are trial participants paid for their time?",
+    "what happens if a study closes early?",
+    "what's the difference between an oncologist and a haematologist?",
+    "what does a biopsy actually involve?",
+    "is it safe to take paracetamol alongside antibiotics?",
+    "what's the normal range for a white blood cell count?",
+    "can you recommend a good book about how cancer research works?",
+    "what's the difference between remission and being cured?",
+    "how are new drugs approved after the trials finish?",
+    "the form on your site won't submit, it just spins forever",
+    "I can't log in and the password reset email never arrives",
+    "your site looks broken on my phone, the buttons overlap",
+    "can I upload a PDF of medical records here, or does it have to be typed?",
+    "the link in your last email was broken, thought you should know",
+    "just wanted to say the new website layout is much easier to use",
+    "who gets to see the information typed into this form?",
+    "is this conversation confidential?",
+    "can you delete my data if I change my mind later?",
+    "do you share anything with drug companies?",
+    "I'm a nurse -- what's the process for referring someone to a trial?",
+    "I'm a journalist looking for background on trial recruitment, who should I contact?",
+    "I'm a medical student, is there a public dataset of trial results I could study?",
+    "do you have statistics on how many people join trials each year?",
+    "I run a patient support group, can we link to your listings?",
+    "where's the nearest cancer centre to Leeds?",
+    "do you have a list of trial sites in Texas?",
+    "are there any studies running in rural areas, or is it all big cities?",
+    "hello, is anyone there?",
+    "good morning -- quick question about your service",
+    "just testing whether this message goes through",
+    "thanks, the bit about randomisation finally made sense",
+    "appreciate the quick reply, I'll read through the links you sent",
+    "that's great, thanks -- I'll come back once I've gathered the paperwork",
+    "I think I've messaged the wrong service, is this the pharmacy?",
+    "can you help me book a GP appointment?",
+    "what time is it in London right now?",
 ]
 
 
 @dataclass
 class Record:
-    """One row's ground truth. Everything a label needs is decided here, before any
-    text exists -- which is what makes the labels exact."""
+    """One row's ground truth: the patient, and the plan for how openly to write them.
+    """
 
     seed: int
     domain: str
@@ -294,6 +365,9 @@ class Record:
     twist: str | None = None
     narrative: str | None = None
     generator: str | None = None
+    reconciled: dict[str, str] = field(default_factory=dict)
+    attempts: int = 0
+    violations: list[str] = field(default_factory=list)
 
 
 def _weighted(rng: random.Random, weights: dict[str, float]) -> str:
@@ -426,6 +500,21 @@ def _spread(
     return probs
 
 
+def _score_spread(
+    levels: list[str], true_index: int, mass: float = 0.55
+) -> dict[str, float]:
+    """`_spread` for an ordinal rubric, keyed by level index as a string.
+    """
+    neighbours = [i for i in (true_index - 1, true_index + 1) if 0 <= i < len(levels)]
+    if not neighbours:
+        return {str(true_index): 1.0}
+    probs = {str(true_index): mass}
+    share = (1.0 - mass) / len(neighbours)
+    for index in neighbours:
+        probs[str(index)] = share
+    return probs
+
+
 def project_labels(record: Record) -> tuple[dict[str, Any], dict[str, Any]]:
     """Return `(expected, gold)` for one record."""
     expected: dict[str, Any] = {}
@@ -453,6 +542,12 @@ def project_labels(record: Record) -> tuple[dict[str, Any], dict[str, Any]]:
         else:
             expected[name] = truth
 
+    if (
+        expected.get("sex") == "unknown"
+        and expected.get("pregnancy_menopausal_status") in FEMALE_ONLY_STATUSES
+    ):
+        expected["sex"] = record.profile["sex"]
+
     for stated, (base, _) in STATED_FIELDS.items():
         expected[stated] = record.disclosure.get(base) == "explicit"
 
@@ -460,15 +555,172 @@ def project_labels(record: Record) -> tuple[dict[str, Any], dict[str, Any]]:
         mode = record.disclosure.get("prior_lines", "omit")
         lines = record.profile["prior_lines"]
         if mode == "vague":
-            expected["prior_lines"] = lines - 0.5 if lines else 0.25
+            gold["prior_lines"] = {
+                "probabilities": _score_spread(PRIOR_LINE_LEVELS, lines)
+            }
         elif mode != "omit":
             expected["prior_lines"] = lines
     return expected, gold
+
+_SHORTHAND = re.compile(
+    r"(?<![\w.])(\d{1,3})\s*(?:yo|y/o|y\.o\.|yrs?|year[- ]old)?\s*([MF])(?![\w])"
+)
+_NEGATION = re.compile(
+    r"\b(?:not|never|no|without|denies|denied|isn't|wasn't|non)\b[\w\s]{0,12}$", re.I
+)
+EXPLICIT_PATTERNS = {
+    "sex": re.compile(
+        r"(?<![\w])(?:males?|females?|man|woman|boy|girl|gentleman|lady)(?![\w])", re.I
+    ),
+    "age_band": re.compile(
+        r"(?<![\w])(?:\d{1,3}\s*(?:yo|y/o|y\.o\.|yrs?)\b|\d{1,3}[- ]year[- ]old"
+        r"|aged?\s+\d{1,3}\b)",
+        re.I,
+    ),
+    "smoking_status": re.compile(
+        r"(?<![\w])(?:never[- ]smokers?|non[- ]smokers?|ex[- ]smokers?"
+        r"|former smokers?|current smokers?|smoking status)(?![\w])",
+        re.I,
+    ),
+    "pregnancy_menopausal_status": re.compile(
+        r"(?<![\w])(?:post[- ]?menopausal|pre[- ]?menopausal|peri[- ]?menopausal"
+        r"|menopausal status|pregnant)(?![\w])",
+        re.I,
+    ),
+    "performance_status": re.compile(
+        r"(?<![\w])(?:ECOG\s*(?:PS\s*)?[0-4]|Karnofsky|KPS\s*\d{2,3})(?![\w])", re.I
+    ),
+}
+
+_FEMALE_WORDS = re.compile(
+    r"\b(?:she|her|hers|herself|wife|daughter|mother|mum|mom|sister|grandmother"
+    r"|girlfriend|aunt|niece|lady|woman|girl|female)\b",
+    re.I,
+)
+_MALE_WORDS = re.compile(
+    r"\b(?:he|him|his|himself|husband|son|father|dad|brother|grandfather"
+    r"|boyfriend|uncle|nephew|gentleman|man|boy|male)\b",
+    re.I,
+)
+
+FEMALE_ONLY_STATUSES = frozenset({"pregnant", "premenopausal", "postmenopausal"})
+
+
+def gendered_signal(text: str) -> str | None:
+    """'female', 'male', 'both' or None -- whether the text shows a sex at all."""
+    female, male = bool(_FEMALE_WORDS.search(text)), bool(_MALE_WORDS.search(text))
+    if female and male:
+        return "both"
+    return "female" if female else "male" if male else None
+
+
+def drop_undecidable_sex(expected: dict[str, Any]) -> bool:
+    """Remove the sex questions from a row rather than answer them wrongly.
+    """
+    removed = False
+    for name in ("sex", "sex_stated"):
+        if name in expected:
+            del expected[name]
+            removed = True
+    return removed
+
+
+_NAMES_FEMALE = re.compile(r"\b(?:female|woman|girl|lady)\b", re.I)
+_NAMES_MALE = re.compile(r"\b(?:male|man|boy|gentleman)\b", re.I)
+
+
+def sex_from_text(text: str) -> str | None:
+    """The sex this text names outright, or None.
+
+    """
+    match = _SHORTHAND.search(text)
+    if match:
+        return "female" if match.group(2).upper() == "F" else "male"
+    if "sex" not in detect_explicit(text):
+        return None
+    female, male = bool(_NAMES_FEMALE.search(text)), bool(_NAMES_MALE.search(text))
+    if female != male:
+        return "female" if female else "male"
+    return None
+
+
+def detect_explicit(text: str) -> set[str]:
+    """The fields this text names outright. Conservative: see the note above.
+    """
+    found: set[str] = set()
+    if _SHORTHAND.search(text):
+        # "65M" names the age and the sex in one token.
+        found.update(("sex", "age_band"))
+    for name, pattern in EXPLICIT_PATTERNS.items():
+        for match in pattern.finditer(text):
+            if not _NEGATION.search(text[max(0, match.start() - 24) : match.start()]):
+                found.add(name)
+                break
+    return found
+
+
+def reconcile_labels(
+    record: Record, expected: dict[str, Any], gold: dict[str, Any]
+) -> dict[str, str]:
+    """Move the labels onto the narrative where the narrative overrode the plan.
+    """
+    changes: dict[str, str] = {}
+    if record.domain == "off_topic" or not record.narrative:
+        return changes
+
+    found = detect_explicit(record.narrative)
+    for stated_name, (base, _) in STATED_FIELDS.items():
+        if base not in found:
+            continue
+        truth = record.profile.get(base)
+        if base == "sex":
+            truth = sex_from_text(record.narrative) or truth
+        if truth is None:
+            continue
+
+        if expected.get(stated_name) is not True:
+            expected[stated_name] = True
+            changes[stated_name] = "false->true"
+
+        if base in gold:
+            # Planned as a hedge, written as a fact: a hard label, not a spread.
+            del gold[base]
+            expected[base] = truth
+            changes[base] = "gold->%s" % truth
+        elif expected.get(base) == "unknown" and truth != "unknown":
+            expected[base] = truth
+            changes[base] = "unknown->%s" % truth
+    return changes
+
+
+def plan_violations(record: Record, text: str) -> list[str]:
+    """Fields the plan said to omit that this text gives away anyway.
+    """
+    if record.domain == "off_topic" or not text:
+        return []
+
+    omitted = {
+        name for name, mode in record.disclosure.items() if mode == "omit"
+    }
+    violations = sorted(omitted & detect_explicit(text))
+    if "sex" in omitted and "sex" not in violations and gendered_signal(text):
+        violations.append("sex")  # a pronoun is enough; it need not name the value
+    return violations
 
 
 def build_row(record: Record) -> dict[str, Any]:
     """The JSONL row laya/train.py reads."""
     expected, gold = project_labels(record)
+    record.reconciled = reconcile_labels(record, expected, gold)
+
+    record.violations = plan_violations(record, record.narrative or "")
+    if (
+        "sex" in record.violations
+        and sex_from_text(record.narrative or "") is None
+        and expected.get("pregnancy_menopausal_status") not in FEMALE_ONLY_STATUSES
+    ):
+        if drop_undecidable_sex(expected):
+            record.reconciled["sex"] = "dropped (gendered text, owner unclear)"
     row: dict[str, Any] = {
         "state": record.narrative,
         "questions": questions_for(record.domain),
@@ -498,11 +750,13 @@ Hard rules:
 3. Write only the message. No JSON, no field names, no mode tags, no preamble, no commentary, and no quotation marks wrapping the whole thing.
 4. Vary wording, length and tone between messages. Real people do not write to a template.
 5. Keep it between one and six sentences.
+6. Do not use the shorthand that fuses age and sex -- "58F", "72 M", "65yo M" -- unless BOTH the age and the sex are marked explicit. It names two facts at once, and it names them even when the mode for one of them was implied or omit.
+7. A fact that is not listed must not be given away by the wording either. This is easy to miss for sex: if sex is not in the list, write about the patient with no gendered word at all -- no he, she, him, her, his, hers, wife, husband, son, daughter, mother, father, sister, brother. Use "they", a neutral relation ("my partner", "my parent", "the person I'm asking about"), or first person. This is the single most common way these messages go wrong.
 """
 
 STYLE_BRIEFS = {
     "clinician": (
-        "Register: a clinician's terse intake shorthand. Abbreviations, slashes and sentence fragments are expected. Example of the register only, do not reuse its content: '58F with HER2+ metastatic breast cancer, progressed on trastuzumab + pertuzumab, brain mets treated with SRS 8 weeks ago. ECOG 1.'"
+        "Register: a clinician's terse intake shorthand. Abbreviations, slashes and sentence fragments are expected. Example of the register only -- do not reuse its content, and note that it opens with the diagnosis rather than an age/sex shorthand, which rule 6 restricts: 'Pt w/ HER2+ metastatic breast cancer, progressed on trastuzumab + pertuzumab, brain mets treated with SRS 8 weeks ago. ECOG 1.'"
     ),
     "caregiver": (
         "Register: a family member writing in plain, non-clinical words about someone they care for. Warm, slightly rambling, everyday descriptions rather than medical scores."
@@ -519,7 +773,26 @@ STYLE_BRIEFS = {
 }
 
 
-def build_user_prompt(record: Record) -> str:
+def _retry_note(violations: list[str]) -> str:
+    """The correction appended when a first attempt gave away an omitted fact."""
+    if not violations:
+        return ""
+    if violations == ["sex"]:
+        detail = (
+            "it revealed the patient's sex. Rewrite it with no gendered word at "
+            "all -- no he/she/him/her/his/wife/husband/son/daughter/mother/father. "
+            "Use 'they', a neutral relation, or first person"
+        )
+    else:
+        detail = (
+            "it gave away %s, which is not in the list of facts. Rewrite it "
+            "without mentioning %s in any form"
+            % (", ".join(violations), "them" if len(violations) > 1 else "it")
+        )
+    return "\n\nYour previous attempt was rejected because %s. Keep the register and the listed facts; change only what gave it away." % detail
+
+
+def build_user_prompt(record: Record, violations: list[str] | None = None) -> str:
     """The per-row instruction. Stable text lives in SYSTEM_PROMPT so it can cache."""
     if record.domain == "off_topic":
         return (
@@ -573,6 +846,7 @@ def build_user_prompt(record: Record) -> str:
         f"Condition (always state this plainly): {profile['condition']}\n\n"
         f"Facts and their modes:\n{listed}\n\n"
         "Write only the message."
+        f"{_retry_note(violations or [])}"
     )
 
 
@@ -591,9 +865,6 @@ class Writer:
         self.spec = spec
         self._client: Any = None
         self._lock = threading.Lock()
-        # Resolved on the first Azure call; see write(). Newer deployments reject
-        # `max_tokens`, older ones reject `max_completion_tokens`, and nothing in the
-        # deployment name says which, so it is settled once by asking.
         self._token_param: str | None = None
 
     def _ensure_client(self) -> Any:
@@ -631,11 +902,6 @@ class Writer:
                         + ", ".join(missing)
                         + " in backend/.env"
                     )
-                # No `azure_deployment` here on purpose: setting it puts that
-                # deployment in the URL path, which silently wins over the `model`
-                # passed per call -- so `azure:gpt-5.5` would quietly hit whatever
-                # AZURE_OPENAI_DEPLOYMENT happens to be. The spec stays authoritative;
-                # `azure:` with no name falls back to the env default.
                 self._client = AzureOpenAI(
                     azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
                     api_key=os.environ["AZURE_OPENAI_API_KEY"],
@@ -652,8 +918,8 @@ class Writer:
                     )
             return self._client
 
-    def write(self, record: Record) -> str:
-        prompt = build_user_prompt(record)
+    def write(self, record: Record, violations: list[str] | None = None) -> str:
+        prompt = build_user_prompt(record, violations)
         client = self._ensure_client()
         if self.provider == "foundry":
             response = client.messages.create(
@@ -670,11 +936,6 @@ class Writer:
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
         ]
-        # Reasoning-era deployments (gpt-5.x) reject `max_tokens` outright and want
-        # `max_completion_tokens`; older ones reject the new name. Try the modern name
-        # first, fall back once, then remember which one this deployment accepts. The
-        # budget is generous because on a reasoning model it also has to cover the
-        # hidden reasoning tokens, and a budget spent entirely on those returns "".
         order = [self._token_param] if self._token_param else ["max_completion_tokens", "max_tokens"]
         last: Exception | None = None
         for name in order:
@@ -693,21 +954,35 @@ class Writer:
 
 
 class StubWriter:
-    """Deterministic fake narratives, so stages A/C/D can be exercised with no API calls."""
+    """Deterministic fake narratives, so stages A/C/D can be exercised with no API calls.
+    """
 
     spec = "stub:none"
 
-    def write(self, record: Record) -> str:
+    def write(self, record: Record, violations: list[str] | None = None) -> str:
         if record.domain == "off_topic":
             return record.profile["off_topic_prompt"]
-        shown = [
+        if violations:  # a retry: the stub complies rather than looping forever
+            return "[%s] %s; the patient prefers not to say more" % (
+                record.presentation,
+                record.profile["condition"],
+            )
+        named = [
             f"{name}={record.profile.get(name)}"
             for name, mode in sorted(record.disclosure.items())
-            if mode != "omit"
+            if mode == "explicit"
         ]
-        return f"[{record.presentation}] {record.profile['condition']}; " + "; ".join(
-            shown
-        )
+        hedged = [
+            name
+            for name, mode in sorted(record.disclosure.items())
+            if mode in ("implied", "vague")
+        ]
+        parts = [f"[{record.presentation}] {record.profile['condition']}"]
+        if named:
+            parts.append("; ".join(named))
+        if hedged:
+            parts.append("you could probably work out " + ", ".join(hedged))
+        return "; ".join(parts)
 
 
 def _paths(out_dir: Path) -> dict[str, Path]:
@@ -769,6 +1044,7 @@ def generate(
     target: int,
     max_failures: int,
     restart: bool,
+    max_attempts: int = 3,
 ) -> int:
     """Add one batch of rows to the corpus, appending to whatever is already there."""
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -803,15 +1079,30 @@ def generate(
     failures = 0
     written = 0
     last_error: Exception | None = None
+    reconciled: Counter = Counter()
+    retried: Counter = Counter()
 
     def work(seed: int) -> tuple[Record, Exception | None]:
         record = sample_record(seed)
         if stop.is_set():
             return record, None
         writer = writers[seed % len(writers)]
+        violations: list[str] = []
         try:
-            record.narrative = writer.write(record)
-            record.generator = writer.spec
+            for attempt in range(1, max_attempts + 1):
+                record.attempts = attempt
+                text = writer.write(record, violations)
+                record.narrative = text
+                record.generator = writer.spec
+                violations = plan_violations(record, text)
+                if not violations:
+                    break
+                # An omitted fact is in the text. No label can describe that row
+                # honestly, so buy a rewrite rather than save it (build_row still
+                # has the last word if the rewrites keep failing).
+                logger.debug(
+                    "seed %s attempt %s revealed %s", seed, attempt, violations
+                )
         except Exception as exc:  # noqa: BLE001 - one bad row must not kill the batch
             return record, exc
         return record, None
@@ -855,8 +1146,18 @@ def generate(
                         "twist": record.twist,
                         "n_expected": len(row.get("expected") or {}),
                         "n_gold": len(row.get("gold") or {}),
+                        "reconciled": record.reconciled,
+                        "attempts": record.attempts,
+                        "violations": record.violations,
                     }
                     with write_lock:
+                        for field_name in record.reconciled:
+                            reconciled[field_name] += 1
+                        if record.attempts > 1:
+                            retried["rows"] += 1
+                            retried["extra calls"] += record.attempts - 1
+                        if record.violations:
+                            retried["gave up, labels narrowed"] += 1
                         handles[split].write(json.dumps(row, ensure_ascii=False) + "\n")
                         handles["manifest"].write(
                             json.dumps(manifest_row, ensure_ascii=False) + "\n"
@@ -895,6 +1196,16 @@ def generate(
         target,
         out_dir,
     )
+    if reconciled:
+        logger.info(
+            "labels reconciled against the narrative: %s",
+            "  ".join("%s=%d" % kv for kv in sorted(reconciled.items())),
+        )
+    if retried:
+        logger.info(
+            "rewrites for a revealed fact: %s",
+            "  ".join("%s=%d" % kv for kv in sorted(retried.items())),
+        )
     if total < target:
         logger.info("run the same command again to add the next batch")
 
@@ -990,6 +1301,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
         target=args.target,
         max_failures=args.max_failures,
         restart=args.restart,
+        max_attempts=args.max_attempts,
     )
 
 
@@ -1129,27 +1441,29 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         action="store_true",
         help="start a fresh corpus, archiving any existing files to .bak first",
     )
+    gen.add_argument(
+        "--max-attempts",
+        type=int,
+        default=3,
+        help="rewrites to buy when a message gives away an omitted fact, before "
+        "settling for narrowed labels (default: 3)",
+    )
     gen.set_defaults(func=cmd_generate)
 
     stats = sub.add_parser("stats", help="coverage report from the manifest")
     stats.set_defaults(func=cmd_stats)
+
+    # Repairing an existing corpus lives in tools/fix_intake_labels.py, not here.
+    # It was a subcommand of this script until 2026-10-16, and the two copies drifted:
+    # one dropped cross-split leakage and left the manifest stale, the other refreshed
+    # the manifest and kept the leakage, so whichever ran last silently decided which
+    # guarantee the corpus had. One implementation, one guarantee.
 
     return parser.parse_args(argv)
 
 
 def _disable_broken_truststore() -> None:
     """Undo truststore's SSL injection on Python 3.14, where it recurses forever.
-
-    `pip_system_certs.pth` injects truststore into every process started from this
-    venv, so this is not something the script opts into. On 3.14 its `wrap_socket`
-    recurses until the C stack is exhausted and every HTTPS call dies with
-    `RecursionError: Stack overflow (used ~1952 kB)` -- which reads like a bug in
-    this script rather than in the TLS layer, and bit the Azure path first only
-    because that connection happened to be opened first.
-
-    Removing it falls back to certifi's CA bundle. Both the Foundry and Azure
-    endpoints verify fine that way; if some future host needs a corporate root CA,
-    this is the line that will have hidden it.
     """
     if sys.version_info < (3, 14):
         return

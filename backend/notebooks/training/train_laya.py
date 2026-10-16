@@ -678,6 +678,7 @@ def main(argv: list[str] | None = None) -> int:
         gradient_checkpointing=_tristate(args.gradient_checkpointing),
         eval_data=eval_path,
         target_error=args.target_error,
+        calib_max=args.calib_max,
         min_abstain_n=args.min_abstain_n,
         # A bar that only moves every 100 micro-batches looks stuck.
         log_every=args.log_every
