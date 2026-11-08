@@ -23,12 +23,7 @@ class LLMConfigError(RuntimeError):
 
 
 class LLMService:
-    """Chat completions from Azure OpenAI, via langchain-openai.
-
-    One service instance is bound to one deployment. Use :meth:`for_role` to get a
-    service bound to a role's deployment, which falls back to the default when
-    that role has no entry in the environment.
-    """
+    """Chat completions from Azure OpenAI, via langchain-openai."""
 
     def __init__(self, deployment: str | None = None, role: str | None = None):
         self._role = role
@@ -45,11 +40,7 @@ class LLMService:
         return LLMService(role=role)
 
     def _ensure_client(self) -> AzureChatOpenAI:
-        """Build the client on first use, after checking the config is complete.
-
-        The SDK's own failure for missing settings is an opaque auth or connection
-        error, so name the missing key here instead.
-        """
+        """Build the client on first use, after checking the config is complete."""
         if self._client is None:
             missing = [key for key in _REQUIRED if not getattr(settings, key)]
             if not self._deployment:
@@ -89,9 +80,6 @@ class LLMService:
         if system:
             messages.append(("system", system))
         messages.append(("human", prompt))
-
-        # Only override what the caller actually set; the deployment's own
-        # defaults apply otherwise.
         overrides: dict[str, Any] = {}
         if temperature is not None:
             overrides["temperature"] = temperature
@@ -100,8 +88,11 @@ class LLMService:
 
         response = self._ensure_client().invoke(messages, **overrides)
         return {
-            "text": response.text() if callable(getattr(response, "text", None))
-            else str(response.content),
+            "text": (
+                response.text()
+                if callable(getattr(response, "text", None))
+                else str(response.content)
+            ),
             "model": self._deployment,
             "usage": response.usage_metadata or {},
         }

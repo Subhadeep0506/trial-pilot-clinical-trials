@@ -39,8 +39,12 @@ class IngestionController:
             documents = [trial.to_embedding_documents() for trial in batch]
             try:
                 self.vector_store.add_documents(documents)
-            except Exception as exc:  # noqa: BLE001 - never abort the batch for one failure
-                logger.warning("Ingestion failed for a batch of %s trials: %s", len(batch), exc)
+            except (
+                Exception
+            ) as exc:  # noqa: BLE001 - never abort the batch for one failure
+                logger.warning(
+                    "Ingestion failed for a batch of %s trials: %s", len(batch), exc
+                )
                 result.failed += len(batch)
                 for trial in batch:
                     result.errors[trial.nct_id] = str(exc)
@@ -55,25 +59,17 @@ class IngestionController:
 
     @staticmethod
     def _should_ingest(row: dict) -> bool:
-        """Whether a corpus row belongs in the vector index.
-
-        Only trials a patient could still be enrolled into. Roughly 85% of the
-        corpus is completed, terminated, withdrawn or status-unknown, and
-        embedding those costs hours for trials that can never be a match.
-        """
+        """Whether a corpus row belongs in the vector index."""
         return (
             row.get("overall_status") in INGESTED_STATUSES
             and row.get("study_type") in INGESTED_STUDY_TYPES
         )
 
     @staticmethod
-    def _row_groups_for(parquet: pq.ParquetFile, start: int, end: int) -> tuple[list[int], int]:
-        """Row groups overlapping ``[start, end)``, and the skip within the first.
-
-        Selecting row groups rather than decoding and discarding rows: the file
-        is 60 groups of 10,000, so starting at row 500,000 costs nothing instead
-        of decoding half a million rows to throw them away.
-        """
+    def _row_groups_for(
+        parquet: pq.ParquetFile, start: int, end: int
+    ) -> tuple[list[int], int]:
+        """Row groups overlapping ``[start, end)``, and the skip within the first."""
         metadata = parquet.metadata
         groups: list[int] = []
         offset_in_first = 0
@@ -93,18 +89,7 @@ class IngestionController:
         start: int = 0,
         apply_filter: bool = True,
     ) -> IngestionResult:
-        """Embed and upsert a range of corpus rows.
-
-        ``start`` and ``limit`` address **raw file rows**, not filtered ones, so
-        a run covers a known, reproducible slice of the corpus and chunked runs
-        resume without re-scanning: rows 0-9,999, then 10,000-19,999, and so on.
-        How many of those rows actually get embedded depends on the filter.
-
-        Streamed rather than read whole: the parquet is 2.3 GB and
-        ``pq.read_table`` holds all of it in memory, which starves the embedding
-        model's context allocation and makes llama_decode fail with -2 on a
-        machine this size.
-        """
+        """Embed and upsert a range of corpus rows."""
         parquet = pq.ParquetFile(PARQUET_PATH)
         corpus_rows = parquet.metadata.num_rows
         start = max(0, min(start, corpus_rows))
@@ -118,9 +103,6 @@ class IngestionController:
         scanned = 0  # raw rows consumed from the range
 
         with tqdm(total=end - start, unit="row", desc="Ingesting") as progress:
-            # Report per document rather than per upsert batch: embedding costs
-            # ~2s each, so a 64-trial batch is two minutes with no visible
-            # movement, which is indistinguishable from a hang.
             embeddings = self.embedding_service.embeddings
             embeddings.on_progress = progress.update
             try:
@@ -128,9 +110,6 @@ class IngestionController:
                     batch_size=EMBED_BATCH_SIZE, row_groups=groups
                 ):
                     rows = record_batch.to_pylist()
-                    # Walk forward to `start` inside the first selected row
-                    # group. The offset is in rows, batches are smaller than a
-                    # row group, so it has to be consumed across several of them.
                     if offset_in_first:
                         if len(rows) <= offset_in_first:
                             offset_in_first -= len(rows)
@@ -142,7 +121,9 @@ class IngestionController:
                         break
                     scanned += len(rows)
 
-                    keep = [r for r in rows if not apply_filter or self._should_ingest(r)]
+                    keep = [
+                        r for r in rows if not apply_filter or self._should_ingest(r)
+                    ]
                     skipped = len(rows) - len(keep)
                     total.skipped += skipped
                     if skipped:  # filtered rows never reach the embedder

@@ -107,18 +107,13 @@ class DecisionLMService:
         session = getattr(agent, "session", None)
         if session is None:
             return
-        marker = next(
-            (i for i in session.get_inputs() if i.name == "marker_pos"), None
-        )
+        marker = next((i for i in session.get_inputs() if i.name == "marker_pos"), None)
         if marker is None or len(marker.shape) < 2:
             return
         width = marker.shape[1]
         if isinstance(width, int):
             raise ValueError(
-                f"Laya ONNX graph has a fixed option axis (marker_pos is [*, {width}]), "
-                f"so it cannot answer questions with a different number of options. "
-                f"Re-export with laya's scripts/export_onnx.py, which declares "
-                f"marker_pos dim 1 as the dynamic 'num_markers'."
+                f"Laya ONNX graph has a fixed option axis (marker_pos is [*, {width}]), so it cannot answer questions with a different number of options. Re-export with laya's scripts/export_onnx.py, which declares marker_pos dim 1 as the dynamic 'num_markers'."
             )
 
     def decide(
@@ -135,8 +130,7 @@ class DecisionLMService:
     def decide_batch(
         self, states: list[dict[str, Any] | str], questions: dict[str, Question]
     ) -> list[dict[str, Answer]]:
-        """Answer the same ``questions`` against many ``states``.
-        """
+        """Answer the same ``questions`` against many ``states``."""
         if not states:
             return []
         agent = self._ensure_agent()
@@ -155,7 +149,9 @@ class DecisionLMService:
 
     @staticmethod
     def _state_text(state: dict[str, Any] | str) -> str:
-        return state if isinstance(state, str) else json.dumps(state, ensure_ascii=False)
+        return (
+            state if isinstance(state, str) else json.dumps(state, ensure_ascii=False)
+        )
 
     def _answers_from(
         self, result: dict[str, Any], questions: dict[str, Question]

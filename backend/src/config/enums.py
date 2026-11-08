@@ -21,10 +21,6 @@ class StudyType(StrEnum):
     EXPANDED_ACCESS = "EXPANDED_ACCESS"
 
 
-# The slice worth embedding: a trial a patient could still be enrolled into.
-# Everything else -- completed, terminated, withdrawn, status unknown -- is
-# retrievable from the parquet but has no place in the vector index.
-# Roughly 70-75k of the corpus's 597,691 rows.
 INGESTED_STATUSES = frozenset(
     {
         OverallStatus.RECRUITING,

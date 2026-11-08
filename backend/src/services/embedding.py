@@ -9,50 +9,22 @@ from src.config import settings
 
 
 class LlamaEmbeddings(Embeddings):
-    """A LangChain ``Embeddings`` backed directly by ``llama_cpp.Llama``.
-
-    Deliberately not langchain-community's ``LlamaCppEmbeddings``: that wrapper
-    has no ``n_ubatch`` field and forbids extra kwargs, so it cannot raise the
-    micro-batch size. The embedding models here are bidirectional encoders, which
-    require the whole sequence in one micro-batch -- past llama.cpp's 512-token
-    default the process dies on
-    ``GGML_ASSERT(cparams.n_ubatch >= n_tokens)``, an abort rather than an
-    exception. Trial documents routinely exceed that. langchain-community is also
-    sunset upstream.
-
-    ``Llama.embed`` truncates each input to ``n_batch`` tokens, so inputs longer
-    than the configured window are cut rather than crashing.
-    """
+    """A LangChain ``Embeddings`` backed directly by ``llama_cpp.Llama``."""
 
     def __init__(self, model: Llama, on_progress: Callable[[int], None] | None = None):
         self._model = model
-        #: Called with 1 after each document is embedded. Embedding dominates
-        #: ingestion at ~2s per document, so a caller that reports progress only
-        #: per upsert batch appears frozen for minutes at a time.
         self.on_progress = on_progress
 
     @staticmethod
     def _flatten(vector) -> list[float]:
-        """Collapse a per-token result to one vector.
-
-        With a pooling type set the model returns one vector per input; with
-        pooling NONE it returns one per token. Mean-pool that case so callers
-        always get a single embedding.
-        """
+        """Collapse a per-token result to one vector."""
         if vector and isinstance(vector[0], list):
             width = len(vector[0])
             return [sum(row[i] for row in vector) / len(vector) for i in range(width)]
         return [float(x) for x in vector]
 
     def embed_documents(self, texts: list[str]) -> list[list[float]]:
-        """Embed one document per decode.
-
-        Handing ``Llama.embed`` the whole list packs several sequences into one
-        batch, and the KV cache is only ``n_ctx`` tokens in total -- shared across
-        sequences, not per sequence. A full-length document therefore leaves no
-        room for the next one and llama_decode fails with -2. One document per
-        call gives each the whole window.
-        """
+        """Embed one document per decode."""
         vectors = []
         for text in texts:
             vectors.append(self._flatten(self._model.embed(text)))
@@ -94,19 +66,13 @@ class EmbeddingService:
         return self._model_path
 
     def _ensure_model(self) -> LlamaEmbeddings:
-        """Load the GGUF on first use; it is expensive, so load it once.
-
-        Deferred rather than loaded in __init__ so that importing this module, or
-        constructing the service at app start, does not block for seconds.
-        """
+        """Load the GGUF on first use; it is expensive, so load it once."""
         if self._embeddings is None:
             model = Llama(
                 model_path=self._model_path,
                 embedding=True,
                 n_ctx=self._n_ctx,
                 n_batch=self._n_batch,
-                # Must match n_batch: a bidirectional encoder needs the whole
-                # sequence in one micro-batch.
                 n_ubatch=self._n_batch,
                 n_threads=self._n_threads,
                 n_gpu_layers=self._n_gpu_layers,

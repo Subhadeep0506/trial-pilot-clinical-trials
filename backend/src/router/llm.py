@@ -13,7 +13,6 @@ def predict(
     service: LLMService = Depends(get_llm_service),
 ) -> LLMResponse:
     """Answer a single prompt with Azure OpenAI."""
-    # The singleton is bound to the default deployment; a role asks for another.
     if request.role:
         service = LLMService.for_role(request.role)
 

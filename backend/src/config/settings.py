@@ -31,15 +31,11 @@ QDRANT_URL = _env("QDRANT_URL")
 QDRANT_API_KEY = _env("QDRANT_API_KEY")
 QDRANT_PATH = _env("QDRANT_PATH", str(BACKEND_ROOT / "data" / "qdrant"))
 
-# Embedding model, run in-process through llama-cpp-python.
 EMBEDDING_MODEL = _model_path(
     "EMBEDDING_MODEL", "jina-embeddings-v5-omni-nano-retrieval-Q8_0.gguf"
 )
 EMBEDDING_N_CTX = int(_env("EMBEDDING_N_CTX", "2048"))
 EMBEDDING_N_BATCH = int(_env("EMBEDDING_N_BATCH", "2048"))
-# 2, not 8: this CPU is 2 performance cores plus 8 efficiency cores, and spilling
-# the encoder onto the E-cores costs more than the parallelism wins. Measured per
-# document on real trial text: 2 threads 1.68s, 4 1.79s, 6 2.03s, 8 2.07s, 10 2.13s.
 EMBEDDING_N_THREADS = int(_env("EMBEDDING_N_THREADS", "2"))
 AZURE_OPENAI_ENDPOINT = _env("AZURE_OPENAI_ENDPOINT")
 AZURE_OPENAI_API_KEY = _env("AZURE_OPENAI_API_KEY")
@@ -55,7 +51,6 @@ def deployment_for_role(role: str | None = None) -> str | None:
     return _env(f"AZURE_OPENAI_DEPLOYMENT_{role.upper()}") or AZURE_OPENAI_DEPLOYMENT
 
 
-# Laya decision model (multilingual checkpoint), served through ONNX Runtime.
 DECISION_ONNX_PATH = _model_path(
     "DECISION_ONNX_PATH", "laya-multilingual-onnx/model.onnx"
 )
@@ -64,17 +59,7 @@ DECISION_BATCH_SIZE = int(_env("DECISION_BATCH_SIZE", "1"))
 
 
 def _load_min_confidence() -> dict[str, float]:
-    """Per-bucket abstention thresholds, as a JSON object in the environment.
-
-    Buckets are the cross product of answer type and option count band --
-    ``"choice:3-5"``, ``"choice:6-10"``, ``"noul:2"`` and so on -- plus
-    ``"default"``. An empty map leaves every bucket ungated at 0.0.
-
-    These are a policy to be fitted, not a model property: Laya ships
-    over-confident, and ``answer_confidence`` is not comparable across option
-    counts. Treat any value here as a placeholder until fitted with
-    ``laya.calibrate.fit_abstention_thresholds`` on real routing decisions.
-    """
+    """Per-bucket abstention thresholds, as a JSON object in the environment."""
     raw = os.environ.get("DECISION_MIN_CONFIDENCE", "").strip()
     if not raw:
         return {}

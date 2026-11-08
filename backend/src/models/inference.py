@@ -1,9 +1,5 @@
-"""Request and response models for the direct model-inference routes."""
-
 from typing import Any
-
 from pydantic import BaseModel, Field
-
 from src.services.decision_lm import Answer, Question
 
 
@@ -11,7 +7,9 @@ class EmbedRequest(BaseModel):
     texts: list[str] = Field(
         min_length=1,
         description="Texts to embed, returned in the same order.",
-        examples=[["Absolute neutrophil count 2.4 x10^9/L", "ECOG performance status 1"]],
+        examples=[
+            ["Absolute neutrophil count 2.4 x10^9/L", "ECOG performance status 1"]
+        ],
     )
 
 
@@ -24,17 +22,13 @@ class EmbedResponse(BaseModel):
 
 class LLMRequest(BaseModel):
     prompt: str = Field(min_length=1, examples=["Reply with the single word OK."])
-    system: str | None = Field(
-        default=None, description="Optional system instruction."
-    )
+    system: str | None = Field(default=None, description="Optional system instruction.")
     temperature: float | None = Field(default=None, ge=0.0, le=2.0)
     max_tokens: int | None = Field(default=None, gt=0)
     role: str | None = Field(
         default=None,
         description=(
-            "Pick a per-role deployment (extract, parse, verify, verdict, "
-            "clarify). Falls back to the default deployment when unset or when "
-            "that role has no deployment configured."
+            "Pick a per-role deployment (extract, parse, verify, verdict, clarify). Falls back to the default deployment when unset or when that role has no deployment configured."
         ),
     )
 
@@ -46,11 +40,7 @@ class LLMResponse(BaseModel):
 
 
 class DecisionRequest(BaseModel):
-    """Mirrors Laya's own call shape: one state, many typed questions.
-
-    All questions are answered in a single forward pass, so asking several at
-    once costs no more than asking one.
-    """
+    """Mirrors Laya's own call shape: one state, many typed questions."""
 
     state: str | dict[str, Any] = Field(
         description="The evidence to decide over: raw text or a JSON object.",

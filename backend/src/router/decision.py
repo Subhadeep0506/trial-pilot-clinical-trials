@@ -12,9 +12,6 @@ def predict(
     request: DecisionRequest,
     service: DecisionLMService = Depends(get_decision_lm_service),
 ) -> DecisionResponse:
-    """Answer every question against the state in one forward pass.
-
-    The first call builds the ONNX session and takes roughly 13 seconds.
-    """
+    """Answer every question against the state in one forward pass."""
     answers = run(service.decide, request.state, request.questions)
     return DecisionResponse(answers=answers, model=service.model_name)
